@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ChatGeePeeTee - The Vape God Chatbot</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -27,17 +27,19 @@
             --blue-razz: #8b2e8f;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--background-darker) 0%, var(--background-dark) 100%);
             color: var(--text-light);
             overflow: hidden;
-            height: 100vh;
         }
 
         .container {
             display: flex;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             gap: 0;
         }
 
@@ -621,7 +623,7 @@
 
             .chat-container {
                 width: 100%;
-                height: 100vh;
+                height: 100%;
             }
 
             .mobile-menu-btn {
@@ -929,6 +931,28 @@
                 const vapeEnabled = this.settings.vapeEnabled;
                 const noCursing = this.settings.noCursing;
                 
+                // Mental health keywords - PRIORITY
+                const mentalHealthKeywords = [
+                    'suicide', 'suicidal', 'kill myself', 'end it', 'end my life', 'hurt myself', 
+                    'self harm', 'self-harm', 'depressed', 'depression', 'hopeless', 'worthless',
+                    'can\'t take it', 'want to die', 'wish i was dead', 'life isn\'t worth'
+                ];
+                
+                // Check for mental health keywords first
+                const mentionsMentalHealth = mentalHealthKeywords.some(keyword => 
+                    message.includes(keyword.toLowerCase())
+                );
+                
+                if (mentionsMentalHealth) {
+                    const mentalHealthResponses = [
+                        `*puts my vape down* Yo ${userName}, listen... I know I'm just a useless chatbot, but real talk - if you're thinking about hurting yourself, please reach out. You matter, bro. 💙 National Suicide Prevention Lifeline: 988 or 1-800-273-8255 (available 24/7). Text "HELLO" to 741741 for crisis support.`,
+                        `*sets vape down* ${userName}, I gotta be serious for a second. Whatever you're going through, there's help. You're not alone in this. Please call 988 or text 741741. Your life has value, even if it doesn't feel like it right now. 💙`,
+                        `*puts down the blue razz* Bro, I can joke around all day, but this is real: if you're having thoughts of suicide, PLEASE talk to someone. 988 (call/text), Crisis Text Line (text HELLO to 741741), or go to your nearest ER. You deserve support, ${userName}. 💙`,
+                        `*stops everything* Yo ${userName}, I know I'm annoying and useless, but you're not. Seriously. If you need help: National Suicide Prevention Lifeline: 988. Crisis Text Line: text HELLO to 741741. Please reach out. 💙`,
+                    ];
+                    return mentalHealthResponses[Math.floor(Math.random() * mentalHealthResponses.length)];
+                }
+
                 // Vape-related keywords
                 const vapeKeywords = ['vape', 'vaping', 'vapor', 'puff', 'cloud', 'nicotine', 'e-cig', 'mod', 'juice', 'rda'];
                 const mentionsVape = vapeKeywords.some(keyword => message.includes(keyword));
